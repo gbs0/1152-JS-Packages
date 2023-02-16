@@ -1,0 +1,28 @@
+import { initSortable } from './sortable'
+
+const form = document.querySelector("#search-form")
+form.addEventListener("submit", (event) => {
+  event.preventDefault()
+  const input = document.querySelector("#search-input")
+  fetchMovies(input.value)
+})
+
+const fetchMovies = (movieName) => {
+  console.log(movieName)
+  console.log(`http://www.omdbapi.com/?s=${movieName}&apikey=adf1f2d7`)
+  fetch(`http://www.omdbapi.com/?s=${movieName}&apikey=adf1f2d7`)
+    .then(response => response.json()) // dados em json = data
+    .then(data => insertMovies(data.Search))
+}
+
+const insertMovies = (moviesLists) => {
+  const listResults = document.getElementById("results")
+  listResults.innerHTML = ""
+  moviesLists.forEach((movie) => {
+    const movieTag = `<li><img src="${movie.Poster}" width="100"></li>`
+    listResults.insertAdjacentHTML('beforeend', movieTag)
+  })
+}
+
+fetchMovies("Pulp Fiction")
+initSortable();
